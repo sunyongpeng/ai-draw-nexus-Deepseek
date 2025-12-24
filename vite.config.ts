@@ -11,6 +11,10 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    outDir: 'worker/dist',
+    emptyOutDir: true,
+  },
   server: {
     proxy: {
       '/api': {
