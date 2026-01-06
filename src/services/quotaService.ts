@@ -8,7 +8,7 @@ const PASSWORD_STORAGE_KEY = 'ai-draw-access-password'
 const LLM_CONFIG_STORAGE_KEY = 'ai-draw-llm-config'
 
 export interface LLMConfig {
-  provider: string // 'openai' | 'anthropic'
+  provider: string // 'openai' | 'anthropic' | 'deepseek'
   baseUrl: string
   apiKey: string
   modelId: string

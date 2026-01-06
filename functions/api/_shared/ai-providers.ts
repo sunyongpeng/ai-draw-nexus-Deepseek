@@ -1,5 +1,35 @@
 import type { Env, Message, ContentPart, AnthropicContentPart, OpenAIResponse, AnthropicResponse } from './types'
 
+export async function callDeepSeek(messages: Message[], env: Env): Promise<string> {
+  const baseUrl = env.AI_BASE_URL
+  const apiKey = env.AI_API_KEY
+
+  if (!apiKey) {
+    throw new Error('AI_API_KEY not configured')
+  }
+
+  const response = await fetch(`${baseUrl}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: env.AI_MODEL_ID,
+      messages: messages,
+      max_tokens: 64000,
+      stream: false,
+    }),
+  })
+
+  if (!response.ok) {
+    const error = await response.text()
+    throw new Error(`DeepSeek API error: ${error}`)
+  }
+
+  const data: OpenAIResponse = await response.json()
+  return data.choices[0]?.message?.content || ''
+}
 export function convertContentPartsToAnthropic(parts: ContentPart[]): AnthropicContentPart[] {
   return parts
     .map((part) => {

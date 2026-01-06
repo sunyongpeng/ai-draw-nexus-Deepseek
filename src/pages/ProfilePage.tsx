@@ -281,6 +281,7 @@ function LLMConfigSection({
           >
             <option value="openai">OpenAI</option>
             <option value="anthropic">Anthropic</option>
+            <option value="deepseek">DeepSeek</option>
           </select>
         </div>
 
@@ -329,6 +330,8 @@ function LLMConfigSection({
 
         <p className="text-xs text-muted">
           配置自己的 LLM API 后，可无限制使用 AI 功能，不消耗每日配额。
+          <br />
+          支持 OpenAI、Anthropic 和 DeepSeek 等兼容 OpenAI 格式的 API。
           <br />
           <span className="text-yellow-600 dark:text-yellow-400">
             注意：如果同时设置了访问密码，将优先使用访问密码。

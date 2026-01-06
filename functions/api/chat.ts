@@ -1,9 +1,11 @@
 import type { Env, ChatRequest, LLMConfig } from './_shared/types'
 import { corsHeaders, handleCors } from './_shared/cors'
 import { validateAccessPassword } from './_shared/auth'
-import { callOpenAI, callAnthropic } from './_shared/ai-providers'
+import { callOpenAI, callAnthropic, callDeepSeek } from './_shared/ai-providers'
 import { streamOpenAI } from './_shared/stream-openai'
 import { streamAnthropic } from './_shared/stream-anthropic'
+import { streamDeepSeek } from './_shared/stream-openai' // 假设 DeepSeek 与 OpenAI 流式处理相同
+
 
 interface PagesContext {
   request: Request
@@ -63,6 +65,8 @@ export const onRequestPost: PagesFunction<Env> = async (context: PagesContext) =
       switch (provider) {
         case 'anthropic':
           return streamAnthropic(messages, effectiveEnv, effectiveExempt)
+        case 'deepseek':
+          return streamDeepSeek(messages, effectiveEnv, effectiveExempt)
         case 'openai':
         default:
           return streamOpenAI(messages, effectiveEnv, effectiveExempt)
@@ -73,6 +77,9 @@ export const onRequestPost: PagesFunction<Env> = async (context: PagesContext) =
       switch (provider) {
         case 'anthropic':
           response = await callAnthropic(messages, effectiveEnv)
+          break
+        case 'deepseek':
+          response = await callDeepSeek(messages, effectiveEnv)
           break
         case 'openai':
         default:
